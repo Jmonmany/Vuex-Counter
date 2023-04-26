@@ -1,13 +1,16 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
+    <CounterComponent />
   </div>
 </template>
 
 <script>
 export default {
   name: "App",
-  components: {},
+  components: {
+    CounterComponent: () => import("./components/CounterComponent"),
+  },
 };
 </script>
 
