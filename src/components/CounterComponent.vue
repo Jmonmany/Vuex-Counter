@@ -2,7 +2,7 @@
   <div>
     <h1>Counter - Vuex</h1>
     <h2>{{ isLoading ? "Loading..." : "" }}</h2>
-    <h2>Direct - Access: {{ $store.state.count }}</h2>
+    <h2>Direct - Access: {{ $store.state.counter.count }}</h2>
     <h2>Computed: {{ countComputed }}</h2>
     <h2>Computed - mapState - count: {{ count }}</h2>
     <h2>Computed - mapState - lastMutation: {{ lastMutation }}</h2>
@@ -15,6 +15,7 @@
     >
       Random
     </button>
+    <h3>Direct getter: {{ $store.getters['counter/squareCount'] }}</h3>
   </div>
 </template>
 
@@ -26,10 +27,10 @@ export default {
 
   computed: {
     countComputed() {
-      return this.$store.state.count;
+      return this.$store.state.counter.count;
     },
-    // ...mapState(['count', 'lastMutation']) usefull when you want to use it as it is
-    ...mapState({
+    // ...mapState('counter',['count', 'lastMutation']) usefull when you want to use it as it is
+    ...mapState("counter", {
       count: (state) => state.count,
       // usefull when you want to rename the state
       lastMutation: "lastMutation",
@@ -40,11 +41,11 @@ export default {
   },
   methods: {
     IncrementCount() {
-      this.$store.commit("increment");
+      this.$store.commit("counter/increment");
       // we call the mutation increment with the commit method
     },
     IncrementCountBy() {
-      this.$store.commit("incrementBy", 5);
+      this.$store.commit("counter/incrementBy", 5);
       // we call the mutation incrementBy with the commit method
       // this.IncrementCountByRandom(), since we are using mapActions we have access to this,
       // so it will be incremented by 5 and then by a random number 1 second later
@@ -53,7 +54,7 @@ export default {
     //   this.$store.dispatch("incrementRandomly");
     //   // we call the mutation incrementByRandom with the commit method
     // },
-    ...mapActions({
+    ...mapActions("counter", {
       // here we can "rename" the action to be used in the component
       // and we can also call another action from here like in IncrementCountBy()
       IncrementCountByRandom: "incrementRandomly",
@@ -68,11 +69,11 @@ export default {
 
 <style scoped>
 button {
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid black;
-    cursor: pointer;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
 }
 .button-enabled {
   background-color: green;
